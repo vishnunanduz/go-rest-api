@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"os"
-	"rest/entity"
+
+	"github.com/vishnunanduz/go-rest-api/entity"
 
 	_ "github.com/mattn/go-sqlite3"
 )

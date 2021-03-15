@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"rest/entity"
+	"github.com/vishnunanduz/go-rest-api/entity"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"

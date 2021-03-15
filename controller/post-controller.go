@@ -3,9 +3,10 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"rest/entity"
-	"rest/errors"
-	"rest/service"
+
+	"github.com/vishnunanduz/go-rest-api/entity"
+	"github.com/vishnunanduz/go-rest-api/errors"
+	"github.com/vishnunanduz/go-rest-api/service"
 )
 
 var (

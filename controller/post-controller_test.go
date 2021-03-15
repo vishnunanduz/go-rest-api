@@ -10,9 +10,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"rest/entity"
-	"rest/repository"
-	"rest/service"
+	"github.com/vishnunanduz/go-rest-api/entity"
+	"github.com/vishnunanduz/go-rest-api/repository"
+	"github.com/vishnunanduz/go-rest-api/service"
 )
 
 const (
