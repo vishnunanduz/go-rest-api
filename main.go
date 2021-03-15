@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	PostRepo       repository.PostRepo       = repository.NewFireStoreRepository()
+	PostRepo       repository.PostRepo       = repository.NewSQLiteRepository()
 	postService    service.PostService       = service.NewPostService(PostRepo)
 	postController controller.PostController = controller.NewPostController(postService)
 	httpRouter     router.Router             = router.NewMuxRouter()
@@ -20,12 +20,12 @@ var (
 func main() {
 
 	const port string = ":8080"
-	httpChiRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
+	httpRouter.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "server started")
 	})
 
-	httpChiRouter.GET("/posts", postController.GetPosts)
-	httpChiRouter.POST("/posts", postController.AddPosts)
+	httpRouter.GET("/posts", postController.GetPosts)
+	httpRouter.POST("/posts", postController.AddPosts)
 
-	httpChiRouter.SERVE(port)
+	httpRouter.SERVE(port)
 }
