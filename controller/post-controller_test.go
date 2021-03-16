@@ -6,10 +6,12 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/vishnunanduz/go-rest-api/cache"
 	"github.com/vishnunanduz/go-rest-api/entity"
 	"github.com/vishnunanduz/go-rest-api/repository"
 	"github.com/vishnunanduz/go-rest-api/service"
@@ -24,7 +26,8 @@ const (
 var (
 	postRepo       repository.PostRepo = repository.NewSQLiteRepository()
 	postSrv        service.PostService = service.NewPostService(postRepo)
-	postController PostController      = NewPostController(postSrv)
+	postCacheSrv   cache.PostCache     = cache.NewRedisCache("localhost:6379", 0, 20)
+	postController PostController      = NewPostController(postSrv, postCacheSrv)
 )
 
 func TestAddPost(t *testing.T) {
@@ -105,6 +108,41 @@ func TestGetPosts(t *testing.T) {
 	assert.Equal(t, ID, posts[0].ID)
 	assert.Equal(t, TITLE, posts[0].Title)
 	assert.Equal(t, TEXT, posts[0].Text)
+
+	// Cleanup database
+	tearDown(ID)
+}
+
+func TestGetPostById(t *testing.T) {
+
+	// Insert new post
+	setup()
+
+	// Create new HTTP request
+	req, _ := http.NewRequest("GET", "/posts"+strconv.FormatInt(ID, 10), nil)
+
+	// Assing HTTP Request handler Function (controller function)
+	handler := http.HandlerFunc(postController.GetPostsById)
+	// Record the HTTP Response
+	response := httptest.NewRecorder()
+	// Dispatch the HTTP Request
+	handler.ServeHTTP(response, req)
+
+	// Assert HTTP status
+	status := response.Code
+	if status != http.StatusOK {
+		t.Errorf("Handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	// Decode HTTP response
+	var posts entity.Post
+	json.NewDecoder(io.Reader(response.Body)).Decode(&posts)
+
+	// Assert HTTP response
+	assert.Equal(t, ID, posts.ID)
+	assert.Equal(t, TITLE, posts.Title)
+	assert.Equal(t, TEXT, posts.Text)
 
 	// Cleanup database
 	tearDown(ID)
