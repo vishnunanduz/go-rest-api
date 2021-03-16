@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/vishnunanduz/go-rest-api/controller"
 	router "github.com/vishnunanduz/go-rest-api/http"
 	"github.com/vishnunanduz/go-rest-api/repository"
@@ -22,5 +20,5 @@ func main() {
 	httpRouter.GET("/posts", postController.GetPosts)
 	httpRouter.POST("/posts", postController.AddPosts)
 
-	httpRouter.SERVE(os.Getenv("PORT"))
+	httpRouter.SERVE(":8080")
 }
