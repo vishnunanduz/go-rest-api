@@ -13,7 +13,7 @@ vim ~/.profile
 ## Go Modules - Initialize the module for the app (from root dir)
 
 ```bash
-go mod init gitlab.com/pragmaticreviews/golang-mux-api
+go mod init gitlab.com/vishnunanduz/golang-rest-api
 ```
 
 ## Go Modules - Download external dependencies
