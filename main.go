@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	postRepo         repository.PostRepo       = repository.NewSQLiteRepository()
+	postRepo         repository.PostRepo       = repository.NewDynamoDBRepository()
 	postService      service.PostService       = service.NewPostService(postRepo)
 	postcacheService cache.PostCache           = cache.NewRedisCache("localhost:6379", 1, 20)
 	postController   controller.PostController = controller.NewPostController(postService, postcacheService)
